@@ -2,14 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Icon Audio Player v3.0</title>
+    <title>Fixed Icon Player v3.1</title>
     <style>
         :root { --accent: #00d4ff; --bg: #121214; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #e1e1e6; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         .sidebar { width: 340px; background: #19191c; padding: 20px; border-right: 1px solid #333; overflow-y: auto; }
-        .sidebar h2 { color: var(--accent); font-size: 14px; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar h2 { color: var(--accent); font-size: 14px; margin: 0 0 15px 0; text-transform: uppercase; }
         label { display: block; font-size: 10px; color: #888; margin-top: 10px; font-weight: bold; }
-        input, textarea, select { width: 100%; background: #29292e; border: 1px solid #3e3e42; color: #fff; padding: 8px; border-radius: 6px; margin-top: 4px; box-sizing: border-box; font-size: 13px; }
+        input, textarea { width: 100%; background: #29292e; border: 1px solid #3e3e42; color: #fff; padding: 8px; border-radius: 6px; margin-top: 4px; box-sizing: border-box; font-size: 13px; }
         .row { display: flex; gap: 8px; }
         .btn-gen { background: var(--accent); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #202024 0%, #000 100%); }
@@ -21,13 +21,13 @@
 <body>
 
 <div class="sidebar">
-    <h2>Конструктор плеера 3.0</h2>
+    <h2>Конструктор 3.1</h2>
     <label>GitHub Root URL</label>
-    <input type="text" id="gh-root" value="https://lindtjulia1-web.github.io/AUDIOPLAYER2/" oninput="updatePreview()">
+    <input type="text" id="gh-root" value="https://lindtjulia1-web.github.io/AUDIOPLAYER2/">
     
     <label>Размеры (Ш х В)</label>
     <div class="row">
-        <input type="number" id="p-w" value="450" oninput="updatePreview()">
+        <input type="number" id="p-w" value="480" oninput="updatePreview()">
         <input type="number" id="p-h" value="180" oninput="updatePreview()">
     </div>
     
@@ -38,10 +38,9 @@
         <input type="color" id="clr-p" value="#ff0055" oninput="updatePreview()">
     </div>
 
-    <label>Плейлист (Название | Файл)</label>
+    <label>Плейлист</label>
     <textarea id="playlist-data" rows="4" oninput="updatePreview()">Track 01 | 1.mp3
-Track 02 | 2.mp3
-Track 03 | 3.mp3</textarea>
+Track 02 | 2.mp3</textarea>
 
     <button class="btn-gen" onclick="showCode()">ПОЛУЧИТЬ КОД ДЛЯ GENIALLY</button>
 </div>
@@ -52,7 +51,6 @@ Track 03 | 3.mp3</textarea>
 
 <div id="code-box">
     <h3 style="margin:0; color:var(--accent); font-size:16px;">Код готов!</h3>
-    <p style="font-size:10px; color:#888;">Скопируйте и вставьте в Genially (Insert -> Others)</p>
     <textarea id="output-code" readonly onclick="this.select()"></textarea>
     <button class="btn-gen" style="background:#333; color:#fff;" onclick="document.getElementById('code-box').style.display='none'">ЗАКРЫТЬ</button>
 </div>
@@ -69,37 +67,34 @@ function generatePlayerSource() {
 
     return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
         :root { --p: ${cp}; --s: ${cs}; --bg: ${cbg}; }
-        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Segoe UI', sans-serif; overflow: hidden; color: #fff; }
-        .pb { width: 96%; height: 92%; background: var(--bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; padding: 15px; box-sizing: border-box; gap: 15px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .lp { width: 35%; display: flex; align-items: center; justify-content: center; }
-        .vi { width: 100%; aspect-ratio: 1/1; border-radius: 50%; background: #000; border: 3px solid #333; animation: r 6s linear infinite; animation-play-state: paused; position: relative; max-width: 100px; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
-        .vi::after { content:""; position:absolute; top:50%; left:50%; width:20%; height:20%; background:var(--bg); border-radius:50%; transform:translate(-50%,-50%); border:2px solid #333; }
+        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; overflow: hidden; }
+        .pb { width: 96%; height: 92%; background: var(--bg); border: 2px solid rgba(255,255,255,0.1); border-radius: 18px; display: flex; padding: 12px; box-sizing: border-box; gap: 12px; position: relative; }
+        .lp { width: 30%; display: flex; align-items: center; justify-content: center; }
+        .vi { width: 100%; aspect-ratio: 1/1; border-radius: 50%; background: #000; border: 2px solid #333; animation: r 6s linear infinite; animation-play-state: paused; position: relative; max-width: 85px; }
         @keyframes r { from {transform:rotate(0deg)} to {transform:rotate(360deg)} }
-        .rp { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
-        .sc { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 5px; border: 1px solid rgba(255,255,255,0.05); }
-        .tm { color: var(--s); font-size: 22px; font-weight: bold; font-family: monospace; letter-spacing: 1px; }
-        .vz { display: flex; align-items: flex-end; gap: 2px; height: 15px; }
-        .br { flex: 1; background: var(--s); height: 2px; border-radius: 1px; transition: 0.1s; }
-        .controls { display: flex; justify-content: space-between; gap: 5px; margin-top: 5px; }
-        .btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--s); flex: 1; padding: 8px 0; cursor: pointer; border-radius: 8px; font-size: 14px; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .btn:hover { background: rgba(255,255,255,0.1); border-color: var(--s); }
-        .btn.active { color: var(--p); border-color: var(--p); box-shadow: 0 0 10px rgba(255,0,85,0.2); }
-        input[type=range] { width: 100%; accent-color: var(--p); cursor: pointer; margin: 5px 0 0 0; height: 4px; }
-        #pl { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; padding: 15px; box-sizing: border-box; border-radius: 20px; z-index: 10; border: 2px solid var(--p); }
-        .list-i { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; font-size: 12px; }
+        .rp { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; }
+        .sc { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 8px; display: flex; flex-direction: column; gap: 3px; border: 1px solid rgba(255,255,255,0.05); flex-grow: 1; min-height: 0; justify-content: center; }
+        .tm { color: var(--s); font-size: 20px; font-weight: bold; font-family: monospace; }
+        .vz { display: flex; align-items: flex-end; gap: 1px; height: 12px; }
+        .br { flex: 1; background: var(--s); height: 2px; }
+        .controls { display: flex; justify-content: space-between; gap: 4px; height: 32px; margin-top: 8px; flex-shrink: 0; }
+        .btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--s); flex: 1; cursor: pointer; border-radius: 6px; font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 0; line-height: 1; }
+        .btn.active { color: var(--p); border-color: var(--p); }
+        input[type=range] { width: 100%; accent-color: var(--p); height: 4px; margin: 2px 0; cursor: pointer; }
+        #pl { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; padding: 12px; box-sizing: border-box; border-radius: 18px; z-index: 10; border: 2px solid var(--p); }
     </style></head><body>
     <div class="pb">
         <div class="lp"><div class="vi" id="disk"></div></div>
         <div class="rp">
             <div class="sc">
-                <div id="title" style="color:var(--p); font-size:10px; font-weight:bold; text-transform:uppercase; white-space:nowrap; overflow:hidden;">READY TO PLAY</div>
+                <div id="title" style="color:var(--p); font-size:9px; font-weight:bold; white-space:nowrap; overflow:hidden;">READY</div>
                 <div id="clock" class="tm">00:00</div>
                 <div id="viz" class="vz"></div>
                 <input type="range" min="0" max="1" step="0.01" value="0.7" oninput="a.volume=this.value">
             </div>
             <div class="controls">
                 <button class="btn" onclick="mv(-1)">⏮</button>
-                <button class="btn" id="pB" onclick="tg()" style="font-size:16px;">▶</button>
+                <button class="btn" id="pB" onclick="tg()">▶</button>
                 <button class="btn" onclick="mv(1)">⏭</button>
                 <button class="btn" onclick="sl()">📜</button>
                 <button class="btn" id="rB" onclick="rnd()">🔀</button>
@@ -107,8 +102,8 @@ function generatePlayerSource() {
             </div>
         </div>
         <div id="pl">
-            <div style="display:flex; justify-content:space-between; color:var(--p); font-weight:bold; margin-bottom:10px;"><span>PLAYLIST</span><span onclick="sl()" style="cursor:pointer">✕</span></div>
-            <div id="list" style="overflow-y:auto; height: calc(100% - 30px);"></div>
+            <div style="display:flex; justify-content:space-between; color:var(--p); font-size:12px; margin-bottom:8px;"><b>LIST</b><span onclick="sl()" style="cursor:pointer">✕</span></div>
+            <div id="list" style="overflow-y:auto; height: calc(100% - 25px); font-size:11px;"></div>
         </div>
     </div>
     <script>
@@ -119,12 +114,12 @@ function generatePlayerSource() {
         function ld(i){ ci=i; a.src=B+T[ci].f; document.getElementById("title").innerText=T[ci].n; }
         function tg(){ if(iP){ a.pause(); disk.style.animationPlayState="paused"; document.getElementById("pB").innerText="▶"; } else { a.play(); disk.style.animationPlayState="running"; document.getElementById("pB").innerText="⏸"; } iP=!iP; }
         function mv(s){ if(iR) ci=Math.floor(Math.random()*T.length); else ci=(ci+s+T.length)%T.length; ld(ci); if(iP) a.play(); }
-        function sl(){ const p=document.getElementById("pl"); p.style.display=p.style.display==="block"?"none":"block"; document.getElementById("list").innerHTML=T.map((t,i)=>\`<div class="list-i" onclick="ld(\${i});tg();sl()" style="color:\${i===ci?'var(--p)':'#fff'}">\${t.n}</div>\`).join(""); }
+        function sl(){ const p=document.getElementById("pl"); p.style.display=p.style.display==="block"?"none":"block"; document.getElementById("list").innerHTML=T.map((t,i)=>\`<div onclick="ld(\${i});tg();sl()" style="padding:8px; border-bottom:1px solid #333; cursor:pointer; color:\${i===ci?'var(--p)':'#fff'}">\${t.n}</div>\`).join(""); }
         function rnd(){ iR=!iR; document.getElementById("rB").classList.toggle("active",iR); }
         a.ontimeupdate=()=>{ 
             let m=Math.floor(a.currentTime/60), s=Math.floor(a.currentTime%60);
             document.getElementById("clock").innerText=m+":"+(s<10?"0":"")+s;
-            if(iP) document.querySelectorAll(".br").forEach(b=>b.style.height=(Math.random()*12+2)+"px");
+            if(iP) document.querySelectorAll(".br").forEach(b=>b.style.height=(Math.random()*10+2)+"px");
         };
         a.onended=()=>mv(1); ld(0);
     <\/script></body></html>`;
