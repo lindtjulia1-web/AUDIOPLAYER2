@@ -2,18 +2,18 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Audio Player Designer v4.2</title>
+    <title>Genially Fix v4.3</title>
     <style>
         :root { --accent: #00d4ff; --bg: #121214; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #e1e1e6; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         .sidebar { width: 340px; background: #19191c; padding: 20px; border-right: 1px solid #333; overflow-y: auto; }
-        .sidebar h2 { color: var(--accent); font-size: 14px; margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar h2 { color: var(--accent); font-size: 14px; margin: 0 0 15px 0; text-transform: uppercase; }
         label { display: block; font-size: 10px; color: #888; margin-top: 10px; font-weight: bold; }
         input, textarea { width: 100%; background: #29292e; border: 1px solid #3e3e42; color: #fff; padding: 8px; border-radius: 6px; margin-top: 4px; box-sizing: border-box; font-size: 13px; }
         .row { display: flex; gap: 8px; }
         .btn-gen { background: var(--accent); color: #000; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 20px; }
         .preview-area { flex: 1; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, #202024 0%, #000 100%); }
-        #iframe-wrap { border: 1px solid #444; background: repeating-conic-gradient(#333 0% 25%, #222 0% 50%) 50% / 20px 20px; border-radius: 20px; overflow: hidden; }
+        #iframe-wrap { border: 1px solid #444; background: repeating-conic-gradient(#333 0% 25%, #222 0% 50%) 50% / 20px 20px; border-radius: 20px; overflow: hidden; position: relative; }
         #code-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; padding: 25px; border: 1px solid #444; border-radius: 15px; display: none; width: 500px; z-index: 1000; }
         #output-code { width: 100%; height: 120px; background: #000; color: #0f9; font-family: monospace; font-size: 10px; padding: 10px; border: 1px solid #333; }
     </style>
@@ -21,14 +21,14 @@
 <body>
 
 <div class="sidebar">
-    <h2>КОНСТРУКТОР V4.2</h2>
+    <h2>КОНСТРУКТОР V4.3 (Fix)</h2>
     <label>GitHub Root URL</label>
     <input type="text" id="gh-root" value="https://lindtjulia1-web.github.io/AUDIOPLAYER2/">
     
     <label>Размеры (Ш х В)</label>
     <div class="row">
         <input type="number" id="p-w" value="500" oninput="updatePreview()">
-        <input type="number" id="p-h" value="210" oninput="updatePreview()">
+        <input type="number" id="p-h" value="180" oninput="updatePreview()">
     </div>
     
     <label>Цвета (Корпус | Иконки | Акцент)</label>
@@ -39,7 +39,7 @@
     </div>
 
     <label>Плейлист</label>
-    <textarea id="playlist-data" rows="4" oninput="updatePreview()">Track 01 | 1.mp3
+    <textarea id="playlist-data" rows="3" oninput="updatePreview()">Track 01 | 1.mp3
 Track 02 | 2.mp3</textarea>
 
     <button class="btn-gen" onclick="showCode()">ПОЛУЧИТЬ КОД ДЛЯ GENIALLY</button>
@@ -50,7 +50,7 @@ Track 02 | 2.mp3</textarea>
 </div>
 
 <div id="code-box">
-    <h3 style="margin:0; color:var(--accent); font-size:16px;">Код для вставки готов!</h3>
+    <h3 style="margin:0; color:var(--accent); font-size:16px;">Код для Genially:</h3>
     <textarea id="output-code" readonly onclick="this.select()"></textarea>
     <button class="btn-gen" style="background:#333; color:#fff;" onclick="document.getElementById('code-box').style.display='none'">ЗАКРЫТЬ</button>
 </div>
@@ -67,54 +67,48 @@ function generatePlayerSource() {
 
     return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
         :root { --p: ${cp}; --s: ${cs}; --bg: ${cbg}; }
-        body { background: transparent; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; overflow: hidden; }
-        .pb { width: 96%; height: 92%; background: var(--bg); border-radius: 25px; display: flex; padding: 18px; box-sizing: border-box; gap: 15px; position: relative; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: transparent; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; overflow: hidden; }
+        .pb { width: 98vw; height: 96vh; background: var(--bg); border-radius: 20px; display: flex; padding: 12px; box-sizing: border-box; gap: 10px; position: relative; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(0,0,0,0.5); align-items: stretch; }
         
-        /* Слева: Вертикальный регулятор */
-        .vol-side { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 20px; }
-        .vol-slider { writing-mode: bt-lr; -webkit-appearance: slider-vertical; width: 6px; height: 110px; accent-color: var(--p); cursor: pointer; }
+        .vol-side { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 20px; flex-shrink: 0; padding: 5px 0; }
+        .vol-slider { writing-mode: bt-lr; -webkit-appearance: slider-vertical; width: 4px; height: 100%; accent-color: var(--p); cursor: pointer; }
         
-        .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .top-sec { display: flex; gap: 20px; align-items: center; }
+        .main { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        .top { display: flex; gap: 12px; align-items: center; height: 60%; }
 
-        /* Пластинка */
-        .disk { width: 85px; height: 85px; border-radius: 50%; background: radial-gradient(circle, #444 0%, #000 80%); border: 3px solid #111; animation: r 5s linear infinite; animation-play-state: paused; position: relative; flex-shrink: 0; }
-        .disk::before { content:""; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; background: conic-gradient(from 0deg, transparent, var(--p), transparent, var(--s), transparent); opacity: 0.5; }
-        .disk::after { content:""; position:absolute; top:50%; left:50%; width:15%; height:15%; background:var(--bg); border-radius:50%; transform:translate(-50%,-50%); border:2px solid #222; }
+        .disk { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, #444 0%, #000 80%); border: 3px solid #111; animation: r 5s linear infinite; animation-play-state: paused; position: relative; flex-shrink: 0; }
+        .disk::before { content:""; position:absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; background: conic-gradient(from 0deg, transparent, var(--p), transparent, var(--s), transparent); opacity: 0.4; }
+        .disk::after { content:""; position:absolute; top:50%; left:50%; width:15%; height:15%; background:var(--bg); border-radius:50%; transform:translate(-50%,-50%); border:1px solid #222; }
         @keyframes r { from {transform:rotate(0deg)} to {transform:rotate(360deg)} }
 
-        /* Экран */
-        .screen { flex: 1; background: rgba(0,0,0,0.4); border-radius: 15px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
-        .time { color: var(--s); font-size: 26px; font-weight: bold; font-family: monospace; line-height: 1; }
-        .viz { display: flex; align-items: flex-end; gap: 2px; height: 20px; margin: 8px 0; }
-        .bar { flex: 1; background: var(--s); height: 2px; transition: 0.15s; border-radius: 1px; }
-        .prog-bg { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; }
-        .prog-fill { position: absolute; height: 100%; background: var(--p); border-radius: 2px; width: 0%; }
+        .screen { flex: 1; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+        .time { color: var(--s); font-size: 24px; font-weight: bold; font-family: monospace; line-height: 1; }
+        .viz { display: flex; align-items: flex-end; gap: 2px; height: 16px; margin: 5px 0; overflow: hidden; }
+        .bar { flex: 1; background: var(--s); height: 2px; transition: 0.15s; }
+        .prog-bg { width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative; }
+        .prog-fill { position: absolute; height: 100%; background: var(--p); width: 0%; }
 
-        /* Кнопки в ряд */
-        .ctrl { display: flex; gap: 6px; height: 40px; margin-top: 5px; }
-        .btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--s); flex: 1; cursor: pointer; border-radius: 10px; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        .ctrl { display: flex; gap: 4px; height: 32px; flex-shrink: 0; }
+        .btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); color: var(--s); flex: 1; cursor: pointer; border-radius: 8px; font-size: 14px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .btn.active { color: var(--p); border-color: var(--p); }
 
-        #pl { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; padding: 20px; box-sizing: border-box; border-radius: 25px; z-index: 10; border: 2px solid var(--p); }
+        #pl { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; padding: 15px; box-sizing: border-box; border-radius: 20px; z-index: 10; border: 1px solid var(--p); }
     </style></head><body>
     <div class="pb">
         <div class="vol-side">
-            <span style="font-size:12px">🔊</span>
+            <span style="font-size:10px">🔊</span>
             <input type="range" class="vol-slider" min="0" max="1" step="0.01" value="0.7" oninput="a.volume=this.value">
         </div>
-        
         <div class="main">
-            <div class="top-sec">
+            <div class="top">
                 <div class="disk" id="disk"></div>
                 <div class="screen">
-                    <div id="title" style="color:var(--p); font-size:10px; font-weight:bold; letter-spacing:1px; text-transform:uppercase;">READY</div>
+                    <div id="title" style="color:var(--p); font-size:9px; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">READY</div>
                     <div id="clock" class="time">00:00</div>
                     <div id="viz" class="viz"></div>
                     <div class="prog-bg"><div id="prog" class="prog-fill"></div></div>
                 </div>
             </div>
-            
             <div class="ctrl">
                 <button class="btn" onclick="mv(-1)">⏮</button>
                 <button class="btn" id="pB" onclick="tg()">▶</button>
@@ -124,29 +118,26 @@ function generatePlayerSource() {
                 <button class="btn" onclick="location.reload()">🔄</button>
             </div>
         </div>
-
         <div id="pl">
-            <div style="display:flex; justify-content:space-between; color:var(--p); font-weight:bold; margin-bottom:10px;"><span>PLAYLIST</span><span onclick="sl()" style="cursor:pointer">✕</span></div>
-            <div id="list" style="overflow-y:auto; height: calc(100% - 30px); font-size:12px;"></div>
+            <div style="display:flex; justify-content:space-between; color:var(--p); font-size:12px; margin-bottom:10px;"><b>PLAYLIST</b><span onclick="sl()" style="cursor:pointer">✕</span></div>
+            <div id="list" style="overflow-y:auto; height: 80%; font-size:11px;"></div>
         </div>
     </div>
     <script>
         const B="${root}", T=${JSON.stringify(playlist)};
         let ci=0, iP=false, iR=false; const a=new Audio();
         const disk=document.getElementById("disk"), viz=document.getElementById("viz");
-        for(let i=0;i<15;i++) { let b=document.createElement("div"); b.className="bar"; viz.appendChild(b); }
-        
+        for(let i=0;i<12;i++) { let b=document.createElement("div"); b.className="bar"; viz.appendChild(b); }
         function ld(i){ ci=i; a.src=B+T[ci].f; document.getElementById("title").innerText=T[ci].n; }
         function tg(){ if(iP){ a.pause(); disk.style.animationPlayState="paused"; document.getElementById("pB").innerText="▶"; } else { a.play(); disk.style.animationPlayState="running"; document.getElementById("pB").innerText="⏸"; } iP=!iP; }
         function mv(s){ if(iR) ci=Math.floor(Math.random()*T.length); else ci=(ci+s+T.length)%T.length; ld(ci); if(iP) a.play(); }
-        function sl(){ const p=document.getElementById("pl"); p.style.display=p.style.display==="block"?"none":"block"; document.getElementById("list").innerHTML=T.map((t,i)=>\`<div onclick="ld(\${i});tg();sl()" style="padding:10px; border-bottom:1px solid #333; cursor:pointer; color:\${i===ci?'var(--p)':'#fff'}">\${t.n}</div>\`).join(""); }
+        function sl(){ const p=document.getElementById("pl"); p.style.display=p.style.display==="block"?"none":"block"; document.getElementById("list").innerHTML=T.map((t,i)=>\`<div onclick="ld(\${i});tg();sl()" style="padding:8px; border-bottom:1px solid #333; cursor:pointer; color:\${i===ci?'var(--p)':'#fff'}">\${t.n}</div>\`).join(""); }
         function rnd(){ iR=!iR; document.getElementById("rB").classList.toggle("active",iR); }
-        
         a.ontimeupdate=()=>{ 
             let m=Math.floor(a.currentTime/60), s=Math.floor(a.currentTime%60);
             document.getElementById("clock").innerText=m+":"+(s<10?"0":"")+s;
             document.getElementById("prog").style.width=(a.currentTime/a.duration*100)+"%";
-            if(iP) document.querySelectorAll(".bar").forEach(b=>b.style.height=(Math.random()*18+2)+"px");
+            if(iP) document.querySelectorAll(".bar").forEach(b=>b.style.height=(Math.random()*14+2)+"px");
         };
         a.onended=()=>mv(1); ld(0);
     <\/script></body></html>`;
